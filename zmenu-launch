@@ -1,0 +1,18 @@
+#!/usr/bin/perl
+
+$ENV{"ZWM_INSERT"} = "START";
+
+$c=`(cat ~/.zmenu-recent && cat ~/.zmenu.conf) | zmenu`;
+
+chomp $c;
+
+print "$c\n";
+
+if ($c ne '') {
+	open S,">$ENV{HOME}/.zmenu-sorted";
+	print S $c,"\n";
+	close S;
+	system "cat ~/.zmenu-sorted ~/.zmenu-recent | grep -v \"$c\"  >> ~/.zmenu-sorted";
+	system "cp ~/.zmenu-sorted ~/.zmenu-recent";
+}
+
